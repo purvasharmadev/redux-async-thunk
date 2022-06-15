@@ -3,7 +3,6 @@ import { v4 as uuid } from "uuid";
 
 import { useSelector, useDispatch } from "react-redux";
 import { postAdd } from "../features/postSlice";
-import { v4 } from "uuid";
 
 export default function PostList() {
   const list = useSelector((state) => state.post.value);
