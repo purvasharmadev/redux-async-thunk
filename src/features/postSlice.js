@@ -16,12 +16,26 @@ const intialStateValue = {
 export const fetchPost = createAsyncThunk("posts/fetchPosts", async () => {
   try {
     const res = await axios.get(POSTS_URL);
-    console.log("res ", res.data);
-    return res.data;
+    return res.data.sort((a, b) => b.id - a.id);
   } catch (error) {
     console.error("error is ", error);
   }
 });
+
+// addPost
+
+export const addNewPost = createAsyncThunk(
+  "posts/addNewPost",
+  async (intialPost) => {
+    try {
+      const res = await axios.post(POSTS_URL, intialPost);
+      console.log("res ", res);
+      return res.data;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+);
 
 export const postSlice = createSlice({
   name: "post",
@@ -29,9 +43,6 @@ export const postSlice = createSlice({
   reducers: {
     postList: (state) => {
       return state.posts;
-    },
-    postAdd: (state, action) => {
-      state.value = [...state.posts, action.payload];
     }
   },
 
@@ -51,6 +62,10 @@ export const postSlice = createSlice({
       .addCase(fetchPost.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
+      })
+      .addCase(addNewPost.fulfilled, (state, action) => {
+        console.log("newPost ", action.payload);
+        state.posts.push(action.payload);
       });
   }
 });

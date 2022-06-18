@@ -3,7 +3,7 @@ import { v4 as uuid } from "uuid";
 
 import { useSelector, useDispatch } from "react-redux";
 import {
-  postAdd,
+  addNewPost,
   fetchPost,
   selectAllPost,
   getPostError,
@@ -22,16 +22,17 @@ export default function PostList() {
       dispatch(fetchPost());
     }
   }, [postStatus, dispatch]);
-  // const [post, setPost] = useState({
-  //   id: uuid(),
-  //   title: "",
-  //   content: ""
-  // });
+  const [newPost, setNewPost] = useState({
+    id: uuid(),
+    title: "",
+    body: ""
+  });
 
-  // const clickHandler = (e) => {
-  //   e.preventDefault();
-  //   dispatch(postAdd(post));
-  // };
+  const clickHandler = (e) => {
+    e.preventDefault();
+    dispatch(addNewPost(newPost));
+    setNewPost({ ...newPost, body: "", title: "" });
+  };
 
   return (
     <div>
@@ -39,19 +40,19 @@ export default function PostList() {
       {postStatus === "loading" && <h1>Loading...</h1>}
       {postError}
       <div>
-        {/* <form onSubmit={clickHandler}>
+        <form onSubmit={clickHandler}>
           <input
-            value={post.title}
+            value={newPost.title}
             onChange={(e) => {
-              setPost({ ...post, title: e.target.value });
+              setNewPost({ ...newPost, title: e.target.value });
             }}
             type="text"
             placeholder="enter title"
           />
           <input
-            value={post.content}
+            value={newPost.body}
             onChange={(e) => {
-              setPost({ ...post, content: e.target.value });
+              setNewPost({ ...newPost, body: e.target.value });
             }}
             type="text"
             placeholder="enter content"
@@ -59,7 +60,7 @@ export default function PostList() {
           <button className="btn" type="submit">
             Add
           </button>
-        </form> */}
+        </form>
       </div>
 
       <div className="flex flex-wrap flex-space-center">
