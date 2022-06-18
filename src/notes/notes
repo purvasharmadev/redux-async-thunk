@@ -1,0 +1,29 @@
+// Redux does everything synchronously so anything asynchrounous
+// has to happen outside the store for which we use middlewares
+// the most common middleware is "redux-thunk"
+
+// thunk: the word literally means "a piece of code that some delayed work"
+
+CreateAsyncThunk:
+read : https://redux-toolkit.js.org/api/createAsyncThunk
+
+- takes two argument
+ a) a string which is used as a prefix for the generated action type
+ b) payload creator callback that returns a promise or an payload
+
+
+async function callBackFn(){
+   try{
+     const res = await axios.get(URL)
+     return res.data //payload
+   }catch(err){
+     console.error(err)
+   }
+}
+
+ export const fetchPost = createAsyncThunk('string ', callBackFn)
+
+
+  // extraReducers is used for for the actions that are not genrated from the slice.
+  // it takes a builder paramater which is an object that let use define additional case reducers that run in
+  //  response to the actions defined outside the slice
